@@ -6,6 +6,9 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,5 +49,11 @@ public class UserController {
 			return ResponseEntity.notFound().build();
 
 		return ResponseEntity.ok(new UserDto(found.get()));
+	}
+	
+	@GetMapping
+	public Page<UserDto> list(@PageableDefault(sort = "name", page = 0, size = 10) Pageable pageable) {
+		Page<User> users = userService.findAll(pageable);
+		return users.map(UserDto::new); 
 	}
 }

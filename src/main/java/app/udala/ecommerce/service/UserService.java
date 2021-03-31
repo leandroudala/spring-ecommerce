@@ -4,6 +4,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import app.udala.ecommerce.controller.advice.DuplicatedEntryException;
@@ -31,5 +33,9 @@ public class UserService {
 		} catch(IllegalArgumentException e) {
 			return Optional.empty();
 		}
+	}
+
+	public Page<User> findAll(Pageable pageable) {
+		return userRepository.findAll(pageable);
 	}
 }
